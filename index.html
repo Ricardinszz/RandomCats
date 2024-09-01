@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Imagem Aleatória de Gato</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+            text-align: center;
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        img {
+            max-width: 80%;
+            max-height: 80%;
+            border-radius: 8px;
+        }
+        .error {
+            color: red;
+            font-size: 1.2em;
+            margin-top: 20px;
+        }
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 1em;
+            color: #fff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>Imagem Aleatória de Gato</h1>
+    <img id="cat-image" alt="Imagem de Gato">
+    <div id="error-message" class="error"></div>
+    <button onclick="obterImagemAleatoriaGato()">Alterar Imagem</button>
+    <script>
+        const urlApi = 'https://api.thecatapi.com/v1/images/search';
+
+        // Função para obter uma imagem aleatória de gato
+        async function obterImagemAleatoriaGato() {
+            try {
+                const resposta = await fetch(urlApi);
+                if (!resposta.ok) {
+                    throw new Error('A resposta da rede não foi bem-sucedida');
+                }
+                const dados = await resposta.json();
+                const urlImagem = dados[0].url;
+                document.getElementById('cat-image').src = urlImagem;
+                document.getElementById('error-message').textContent = '';
+            } catch (erro) {
+                document.getElementById('error-message').textContent = 'Não foi possível obter uma imagem de gato. Tente novamente mais tarde.';
+                console.error('Houve um problema com a operação fetch:', erro);
+            }
+        }
+
+        obterImagemAleatoriaGato();
+    </script>
+</body>
+</html>
